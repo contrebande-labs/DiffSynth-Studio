@@ -22,6 +22,8 @@ def get_device_type() -> str:
         device = "cuda"
     elif IS_NPU_AVAILABLE:
         device = "npu"
+    elif hasattr(torch, "xpu") and hasattr(torch.xpu, "is_available") and callable(torch.xpu.is_available) and torch.xpu.is_available():
+        device = "xpu"
     else:
         device = "cpu"
 
