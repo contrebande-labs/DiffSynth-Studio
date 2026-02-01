@@ -157,7 +157,8 @@ class BasePipeline(torch.nn.Module):
                             for module in model.modules():
                                 if hasattr(module, "offload"):
                                     module.offload()
-            getattr(torch, self.device_type).empty_cache()
+            torch_device = getattr(torch, self.device_type)
+            if hasattr(torch_device, "empty_cache") and callable(torch_device, "empty_cache"): torch_device.empty_cache()
             # onload models
             for name, model in self.named_children():
                 if name in model_names:
